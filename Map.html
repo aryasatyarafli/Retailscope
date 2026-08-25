@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Retailscope — Interactive Map</title>
+  <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="map.css">
+</head>
+<body>
+
+  <div id="map"></div>
+
+  <!-- TOP NAV -->
+  <nav class="topbar">
+
+    <!-- SEARCH BAR -->
+    <div class="search-wrapper">
+      <input id="search-input" class="search-input" type="text" placeholder="Search Area...">
+      <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <div id="search-results" class="search-results"></div>
+    </div>
+
+    <div class="topbar-divider"></div>
+    <div class="topbar-links">
+      <a href="Index.html" class="topbar-link">Home</a>
+      <a href="Portofolio.html" class="topbar-link">About</a>
+    </div>
+  </nav>
+
+  <!-- LEFT PANEL -->
+  <div class="panel-left">
+
+    <!-- BASEMAP -->
+    <div class="panel-section">
+      <div class="section-label">Basemap</div>
+      <div class="basemap-grid">
+        <div class="basemap-thumb active" onclick="setBasemap('street', this)">
+          <span>Street</span>
+        </div>
+        <div class="basemap-thumb" onclick="setBasemap('dark', this)">
+          <span>Dark</span>
+        </div>
+        <div class="basemap-thumb" onclick="setBasemap('satellite', this)">
+          <span>Satellite</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL TABS -->
+    <div class="panel-tabs">
+      <button class="panel-tab active" onclick="switchTab('layers', this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        Layers
+      </button>
+      <button class="panel-tab" onclick="switchTab('buffer', this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+        Buffer
+      </button>
+      <button class="panel-tab" onclick="switchTab('location', this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Location
+      </button>
+    </div>
+
+    <!-- LAYERS TAB -->
+    <div id="panel-layers" class="panel-content active">
+
+      <!-- TOGGLE LAYER -->
+<div class="panel-section">
+  <div class="section-label">Toggle Layers</div>
+  <div class="layer-item">
+    <div class="layer-left">
+      <div class="layer-dot" style="background:#94a3b8;"></div>
+      Retail Locations
+    </div>
+    <label class="toggle">
+      <input type="checkbox" checked onchange="toggleLayer('retail', this.checked)">
+      <span class="toggle-slider"></span>
+    </label>
+  </div>
+  <div class="layer-item">
+    <div class="layer-left">
+      <div class="layer-dot" style="background:#3b82f6;"></div>
+      Admin Boundary
+    </div>
+    <label class="toggle">
+      <input type="checkbox" checked onchange="toggleLayer('batas-admin', this.checked)">
+      <span class="toggle-slider"></span>
+    </label>
+  </div>
+  <div class="layer-item">
+    <div class="layer-left">
+      <div class="layer-dot" style="background:#475569;border-radius:2px;"></div>
+      Road Network
+    </div>
+    <label class="toggle">
+      <input type="checkbox" checked onchange="toggleLayer('jalan', this.checked)">
+      <span class="toggle-slider"></span>
+    </label>
+  </div>
+  <div class="layer-item">
+    <div class="layer-left">
+      <div class="layer-dot" style="background:#f97316;"></div>
+      Bus Stop (Halte)
+    </div>
+    <label class="toggle">
+      <input type="checkbox" checked onchange="toggleLayer('halte', this.checked)">
+      <span class="toggle-slider"></span>
+    </label>
+  </div>
+  <div class="layer-item">
+    <div class="layer-left">
+      <div class="layer-dot" style="background:#ef4444;"></div>
+      KRL Station
+    </div>
+    <label class="toggle">
+      <input type="checkbox" checked onchange="toggleLayer('stasiun', this.checked)">
+      <span class="toggle-slider"></span>
+    </label>
+  </div>
+</div>
+
+      <!-- FILTER KATEGORI -->
+      <div class="panel-section">
+        <div class="section-label">Filter By Category</div>
+        <div class="filter-item" onclick="toggleKategoriUI(this, 'Daily Needs')">
+          <div class="filter-left">
+            <div class="filter-dot" style="background:#22c55e;"></div>
+            <div>
+              <div class="filter-name">Daily Needs</div>
+              <div class="filter-sub">Minimarket · Supermarket · Kelontong</div>
+            </div>
+          </div>
+          <div class="filter-check active">✓</div>
+        </div>
+        <div class="filter-item" onclick="toggleKategoriUI(this, 'Fashion & Beauty')">
+          <div class="filter-left">
+            <div class="filter-dot" style="background:#a855f7;"></div>
+            <div>
+              <div class="filter-name">Fashion & Beauty</div>
+              <div class="filter-sub">Pakaian · Kosmetik · Kostum</div>
+            </div>
+          </div>
+          <div class="filter-check active">✓</div>
+        </div>
+        <div class="filter-item" onclick="toggleKategoriUI(this, 'Home & Living')">
+          <div class="filter-left">
+            <div class="filter-dot" style="background:#3b82f6;"></div>
+            <div>
+              <div class="filter-name">Home & Living</div>
+              <div class="filter-sub">Bangunan · Elektronik · Otomotif</div>
+            </div>
+          </div>
+          <div class="filter-check active">✓</div>
+        </div>
+        <div class="filter-item" onclick="toggleKategoriUI(this, 'Specialty')">
+          <div class="filter-left">
+            <div class="filter-dot" style="background:#f59e0b;"></div>
+            <div>
+              <div class="filter-name">Specialty</div>
+              <div class="filter-sub">Buku · Mainan · Optik · Hewan</div>
+            </div>
+          </div>
+          <div class="filter-check active">✓</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BUFFER TAB -->
+
+    <div id="panel-buffer" class="panel-content">
+      <div class="panel-section">
+        <div class="section-label">Buffer Radius</div>
+        <div class="radius-display" id="label-radius">0.30 <span>km</span></div>
+        <p style="font-size:11px;color:#94a3b8;margin-bottom:4px;">Distance from dropped location</p>
+        <div class="slider-row">
+          <span class="slider-minmax">0.30</span>
+          <input type="range" id="input-radius" min="0.30" max="1.20" step="0.01" value="0.30">
+          <span class="slider-minmax">1.20</span>
+        </div>
+      <button class="btn-primary" onclick="jalankanBuffer()">Run Buffer</button>
+      <button class="btn-secondary" onclick="hapusBuffer()">Clear Buffer</button>
+      </div>
+    <div id="buffer-results" style="display:none;" class="panel-section"></div>
+    </div>
+
+    <!-- LOCATION TAB -->
+    <div id="panel-location" class="panel-content">
+      <div class="panel-section">
+        <div class="section-label">My Location</div>
+        <button class="location-btn" onclick="laporkanLokasi()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Detect via GPS
+        </button>
+        <button class="location-btn" onclick="aktifkanManual()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Drop Location Manually
+        </button>
+        <div id="info-lokasi" class="lokasi-info">
+          <div id="teks-lokasi"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- GPS FAB -->
+  <button class="gps-fab" onclick="laporkanLokasi()" title="My Location">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <circle cx="12" cy="12" r="4"/>
+      <line x1="12" y1="2" x2="12" y2="6"/>
+      <line x1="12" y1="18" x2="12" y2="22"/>
+      <line x1="2" y1="12" x2="6" y2="12"/>
+      <line x1="18" y1="12" x2="22" y2="12"/>
+    </svg>
+  </button>
+
+<!-- LEGEND BOX -->
+<div class="legend-box">
+  <div class="legend-title">Legend</div>
+  <div class="legend-section-label">Retail Category</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#22c55e;"></div> Daily Needs</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#a855f7;"></div> Fashion & Beauty</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#3b82f6;"></div> Home & Living</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#f59e0b;"></div> Specialty</div>
+  <div class="legend-divider"></div>
+  <div class="legend-section-label">Transit</div>
+  <div class="legend-item">
+    <svg width="12" height="16" viewBox="0 0 24 32"><path d="M12 0C5.373 0 0 5.373 0 12c0 9 12 20 12 20S24 21 24 12C24 5.373 18.627 0 12 0z" fill="#f97316" stroke="white" stroke-width="1.5"/><circle cx="12" cy="12" r="4" fill="white"/></svg>
+    Bus Stop
+  </div>
+  <div class="legend-item">
+    <svg width="12" height="16" viewBox="0 0 24 32"><path d="M12 0C5.373 0 0 5.373 0 12c0 9 12 20 12 20S24 21 24 12C24 5.373 18.627 0 12 0z" fill="#ef4444" stroke="white" stroke-width="1.5"/><circle cx="12" cy="12" r="4" fill="white"/></svg>
+    KRL Station
+  </div>
+</div>
+
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@7/turf.min.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>
