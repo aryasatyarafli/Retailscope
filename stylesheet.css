@@ -108,6 +108,22 @@ footer p:hover {
   text-align: center;
   position: relative;
   overflow: hidden;
+  
+}
+
+#home2 {
+  margin: 30px 30px 20px;
+  padding: 50px 40px 40px;
+  background: linear-gradient(135deg, #ffffff 60%, #e8f0fe 100%);
+  border-radius: 20px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.40), 0 2px 8px rgba(0,0,0,0.20);
+  border-bottom: 4px solid #ff751f;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: 
+    linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 55%),
+    url('Bg.png') center top / cover no-repeat;
 }
 
 #home::before {
@@ -119,10 +135,19 @@ footer p:hover {
   background: radial-gradient(circle, rgba(13,71,161,0.07), transparent 70%);
 }
 
+#home2::before {
+  content: "";
+  position: absolute;
+  top: -60000px; right: -60px;
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(13,71,161,0.07), transparent 70%);
+}
+
 .hero-badge {
   display: inline-block;
-  background: #c6c6c632;
-  color: #ff751f;
+  background: #ef6d025c;
+  color: #000000;
   font-size: 10px;
   font-weight: 600;
   padding: 5px 14px;
@@ -139,6 +164,15 @@ footer p:hover {
   margin: 0 0 14px;
   line-height: 1.2;
 }
+
+#home2 h2 {
+  font-size: 34px;
+  font-weight: 800;
+  color: #1a2332;
+  margin: 0 0 14px;
+  line-height: 1.2;
+}
+
 
 .hero-highlight {
   color: #ff751f;
